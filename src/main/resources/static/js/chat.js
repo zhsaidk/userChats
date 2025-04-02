@@ -1,9 +1,20 @@
 let socket;
+let reconnectInterval = 3000;
+
+// Получаем chatId из URL
+const urlParams = new URLSearchParams(window.location.search);
+const chatId = urlParams.get("chatId");
+
 function connect() {
-    socket = new WebSocket("ws://localhost:8080/ws/chat");
+    if (!chatId) {
+        console.error("❌ chatId не указан в URL");
+        return;
+    }
+
+    socket = new WebSocket(`ws://localhost:8080/ws/chat?chatId=${chatId}`);
 
     socket.onopen = () => {
-        console.log("✅ Соединение установлено");
+        console.log(`✅ Соединение установлено для комнаты ${chatId}`);
     };
 
     socket.onmessage = (event) => {
@@ -16,6 +27,11 @@ function connect() {
 
     socket.onerror = (error) => {
         console.error("❌ Ошибка WebSocket:", error);
+    };
+
+    socket.onclose = () => {
+        console.warn(`⚠️ Соединение закрыто для комнаты ${chatId}. Переподключение через ${reconnectInterval / 1000} секунд...`);
+        setTimeout(connect, reconnectInterval);
     };
 }
 

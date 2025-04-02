@@ -46,7 +46,7 @@ public class MessageRestController {
 
     @GetMapping("/{roomId}")
     public ResponseEntity<List<Message>> getMessagesByRoomId(@PathVariable("roomId") String roomId) {
-        List<Message> messages = messageService.getMessagesByRoomId(roomId);
+        List<Message> messages = messageService.getMessagesByChatId(roomId);
         return ResponseEntity.ok(messages);
     }
 }

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rooms page</title>
+</head>
+<body>
+    <h3>List of room</h3><br/>
+    <div th:each="room : ${rooms}">
+        <a th:text="|${room.getName()}|" th:href="@{/chat(chatId=${room.id})}"/><br>
+    </div><br>
+</body>
+</html>

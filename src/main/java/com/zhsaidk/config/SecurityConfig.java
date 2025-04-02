@@ -18,6 +18,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers( "/users/**").permitAll()
                         .anyRequest().authenticated())
+
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();
     }

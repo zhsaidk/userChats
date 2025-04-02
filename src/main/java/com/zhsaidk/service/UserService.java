@@ -1,8 +1,10 @@
 package com.zhsaidk.service;
 
 import com.zhsaidk.config.EncoderPassword;
+import com.zhsaidk.database.entity.ChatRoom;
 import com.zhsaidk.database.entity.Role;
 import com.zhsaidk.database.entity.User;
+import com.zhsaidk.database.repository.ChatRoomRepository;
 import com.zhsaidk.database.repository.UserRepository;
 import com.zhsaidk.dto.UserReadDto;
 import com.zhsaidk.mapper.UserReadMapper;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -30,6 +33,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserReadMapper userReadMapper;
+    private final ChatRoomRepository chatRoomRepository;
 
     @GetMapping
     public List<UserReadDto> findAll(){
@@ -72,6 +76,12 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
+    public List<ChatRoom> findAllRooms(Principal principal){
+        User user = userRepository.findUserByEmail(principal.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return chatRoomRepository.findChatRoomsByUserIdsContaining(user.getId());
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
