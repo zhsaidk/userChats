@@ -3,6 +3,8 @@ package com.zhsaidk.service;
 import com.zhsaidk.database.entity.Message;
 import com.zhsaidk.database.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,5 +23,9 @@ public class MessageService {
 
     public List<Message> getMessagesByChatId(String roomId) {
         return messageRepository.findMessageByChatIdOrderByTimestamp(roomId);
+    }
+
+    public Page<Message> getMessagesByChatId(String roomId, Pageable pageable) {
+        return messageRepository.findMessageByChatIdOrderByTimestamp(roomId, pageable);
     }
 }

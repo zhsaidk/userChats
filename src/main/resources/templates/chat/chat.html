@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +10,20 @@
 
 <div class="chat-container">
   <h2>WebSocket Чат</h2>
-  <ul id="messages"></ul>
+  <button id="loadMore" th:attr="data-chat-id=${chatId}, data-page=${page}, data-size=${size}">Загрузить ещё</button>
+  <ul id="messages">
+    <!-- Загружаем историю сообщений -->
+    <th:block th:each="msg : ${messages}">
+      <li th:text="${msg.text}" class="other-message"></li>
+    </th:block>
+  </ul>
   <div class="input-container">
     <input type="text" id="messageInput" placeholder="Введите сообщение">
     <button onclick="sendMessage()">Отправить</button>
   </div>
 </div>
 
-<script src="/js/chat.js"></script>
+<script th:src="@{/js/chat.js}"></script>
 
 </body>
 </html>

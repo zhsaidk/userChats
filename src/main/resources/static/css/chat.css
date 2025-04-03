@@ -62,3 +62,16 @@ button {
 button:hover {
     background: #218838;
 }
+#loadMore {
+    width: 100%;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+#loadMore:hover {
+    background: #0056b3;
+}
